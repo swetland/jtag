@@ -75,6 +75,11 @@ int jtag_open_virtual_device(unsigned iid) {
 	hub_nodecount = (bits >> 19) & 0xFF;
 	hub_mfg = (bits >> 8) & 0x7FF;
 
+	if (hub_mfg != 0x06e) {
+		fprintf(stderr,"HUB:    Cannot Find Virtual JTAG HUB\n");
+		return -1;
+	}
+
 	/* altera docs claim this field is the sum of M bits (VIR field) and
 	 * N bits (ADDR field), but empirical evidence suggests it is actually
 	 * just the width of the ADDR field and the docs are wrong...
