@@ -16,5 +16,5 @@ jload.c - example of using the virtual jtag interface for a downloader interface
 jinfo.c - dumps idcode and virtual jtag hub and device info table
 
 
-Why?  Scripting the Altera quartus_stp tool in TCL was driving me nuts.A
+Why?  Scripting the Altera quartus_stp tool in TCL was driving me nuts.
 
