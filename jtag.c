@@ -90,6 +90,11 @@ static int usb_bulk(unsigned char ep, void *data, int len, unsigned timeout) {
 /* bytecount for data bytes that follow in byte mode */
 #define UB_COUNT(n)	((n) & 0x3F)
 
+static inline uint8_t ub(uint8_t flags)
+{
+    return UB_OE | flags;
+}
+
 int jtag_move(int count, unsigned bits){
 	unsigned char buf[64];
 	int n = 0;
@@ -98,11 +103,11 @@ int jtag_move(int count, unsigned bits){
 #endif
 	while (count-- > 0) {
 		if (bits & 1) {
-			buf[n++] = UB_TMS;
-			buf[n++] = UB_TMS | UB_TCK;
+			buf[n++] = ub(UB_TMS);
+			buf[n++] = ub(UB_TMS | UB_TCK);
 		} else {
-			buf[n++] = 0;
-			buf[n++] = UB_TCK;
+			buf[n++] = ub(0);
+			buf[n++] = ub(UB_TCK);
 		}
 		bits >>= 1;
 	}
@@ -120,11 +125,11 @@ int jtag_shift(int count, unsigned bits, unsigned *out) {
 #endif
 	while (count-- > 0) {
 		if (bits & 1) {
-			buf[n++] = UB_TDI;
-			buf[n++] = UB_TDI | UB_TCK | RB;
+			buf[n++] = ub(UB_TDI);
+			buf[n++] = ub(UB_TDI | UB_TCK | RB);
 		} else {
-			buf[n++] = 0;
-			buf[n++] = UB_TCK | RB;
+			buf[n++] = ub(0);
+			buf[n++] = ub(UB_TCK | RB);
 		}
 		bits >>= 1;
 	}

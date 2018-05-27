@@ -103,9 +103,6 @@ int jtag_open_virtual_device(unsigned iid) {
 	vir_width_addr = needbits(hub_nodecount);
 	vir_width = vir_width_ir + vir_width_addr;
 
-	fprintf(stderr,"HUB:    Mfg=0x%03x, Ver=0x%02x, Nodes=%d, VIR=%d+%d bits\n",
-		hub_mfg, hub_version, hub_nodecount, vir_width_addr, vir_width_ir);
-
 	for (n = 0; n < hub_nodecount; n++) {
 		unsigned node_ver, node_id, node_mfg, node_iid;
 		if ((r = jtag_dr_8x4(&bits)) < 0) return r;
@@ -113,9 +110,6 @@ int jtag_open_virtual_device(unsigned iid) {
 		node_id = (bits >> 19) & 0xFF;
 		node_mfg = (bits >> 8) & 0x7FF;
 		node_iid = bits & 0xFF;
-
-		fprintf(stderr,"NODE:   Mfg=0x%03x, Ver=0x%02x, ID=0x%02x, IID=0x%02x\n",
-			node_mfg, node_ver, node_id, node_iid);
 
 		if ((node_id == 0x08) && (node_iid) == iid) {
 			vir_addr = (n + 1) << vir_width_ir;
